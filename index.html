@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Indie+Flower&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-main: #ff4d6d;
+            --pink-light: #fff0f3;
+            --pastel-purple: #f3e5f5;
+            --pastel-blue: #e3f2fd;
+            --pastel-peach: #fff3e0;
+            --pastel-green: #f1f8e9;
+            --book-width: 320px;
+            --book-height: 480px;
+        }
+
+        body {
+            background-color: #fff0f3;
+            background-image: radial-gradient(#ffb3c1 0.8px, transparent 0.8px), 
+                              linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            background-size: 20px 20px, 100% 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            perspective: 1500px;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Musik Player */
+        .music-control {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: white; padding: 12px; border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2); cursor: pointer;
+        }
+
+        /* Container Buku */
+        .book {
+            width: var(--book-width);
+            height: var(--book-height);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            z-index: 500;
+        }
+
+        .page {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            z-index: 10;
+        }
+
+        .front, .back {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            backface-visibility: hidden;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box;
+            border-radius: 0 15px 15px 0;
+            box-shadow: inset -3px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .back { transform: rotateY(180deg); }
+
+        /* --- BACKGROUND PATTERN --- */
+        #p1 .back {
+            background-color: var(--pastel-purple);
+            background-image: linear-gradient(rgba(255,255,255,.6) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.6) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+        #p2 .front {
+            background-color: var(--pastel-blue);
+            background-image: radial-gradient(rgba(255,255,255,.8) 2px, transparent 2px);
+            background-size: 15px 15px;
+        }
+        #p2 .back {
+            background-color: var(--pastel-peach);
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,.6) 20px);
+            background-size: 100% 20px;
+            border-radius: 15px 0 0 15px;
+            border-right: 3px solid #ffcc80;
+        }
+        #p3 .front {
+            background-color: var(--pastel-green);
+            background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+            background-size: 15px 15px;
+        }
+
+        .cover-front { 
+            background: var(--pink-main) !important; 
+            background-image: none !important;
+            color: white; text-align: center; 
+        }
+
+        .page.flipped { transform: rotateY(-180deg); }
+
+        .photo-frame {
+            width: 100%; height: 280px; background: #fff;
+            padding: 10px 10px 45px 10px; border: 1px solid #eee;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); position: relative;
+            box-sizing: border-box;
+        }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #f9f9f9; }
+        .photo-tag { position: absolute; bottom: 12px; right: 15px; font-family: 'Dancing Script', cursive; color: var(--pink-main); font-size: 16px; }
+
+        .sticker { position: absolute; font-size: 35px; z-index: 5; animation: float 3s ease-in-out infinite; pointer-events: none; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-15px) rotate(10deg); } }
+
+        .caption { 
+            font-family: 'Indie Flower', cursive; font-size: 16px; color: #444; 
+            text-align: center; margin-top: 15px; padding: 5px 12px;
+            background: rgba(255,255,255,0.7); border-radius: 12px;
+        }
+
+        .base-page {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            border-radius: 0 15px 15px 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 25px; box-sizing: border-box;
+            z-index: 1; box-shadow: 5px 5px 25px rgba(0,0,0,0.15);
+            background-color: var(--pastel-green);
+            background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+            background-size: 15px 15px;
+        }
+
+        .pass-input {
+            width: 85%; padding: 12px; border: 2px solid #ffcdd2;
+            border-radius: 15px; text-align: center; margin-bottom: 15px;
+            font-family: 'Quicksand', sans-serif; font-weight: bold; background: white;
+        }
+
+        .unlock-btn { background: var(--pink-main); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+
+        .bg-heart {
+            position: fixed; top: -10vh;
+            z-index: 9999; pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .heart-beat { animation: beat 0.8s infinite; color: var(--pink-main); display: inline-block; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop><source src="lagu.mp3.mp3" type="audio/mpeg"></audio>
+    <div class="music-control" onclick="toggleMusic()"><span id="musicIcon">🎵</span></div>
+
+    <div class="book" id="book">
+        
+        <div class="page" id="p1" style="z-index: 4;">
+            <div class="front cover-front" onclick="nextPage(1)">
+                <div style="border: 2px dashed rgba(255,255,255,0.5); padding: 25px; border-radius: 20px;">
+                    <h1 style="font-size: 55px; margin: 0; font-family: 'Dancing Script', cursive;">Us.</h1>
+                    <p style="letter-spacing: 4px; font-size: 11px; font-weight: bold;">HAPPY ANNIVERSARY</p>
+                    <div class="heart-beat" style="font-size: 45px; margin: 20px 0;">💖</div>
+                </div>
+                <small style="margin-top: 30px; display: block; opacity: 0.9; font-weight: bold;">Tap buat buka &raquo;</small>
+            </div>
+            <div class="back" onclick="prevPage(1)">
+                <div class="sticker" style="top: 10px; right: 10px;">🌟</div>
+                <div class="photo-frame" style="transform: rotate(-3deg);">
+                    <img src="foto1.jpg">
+                    <span class="photo-tag">First Moment ♡</span>
+                </div>
+                <p class="caption">"foto pertama kita. yang dimana kita langsung tripledate hahahaha "</p>
+            </div>
+        </div>
+
+        <div class="page" id="p2" style="z-index: 3;">
+            <div class="front" onclick="nextPage(2)">
+                <div class="sticker" style="top: 15px; left: 15px;">🎀</div>
+                <div class="photo-frame" style="transform: rotate(3deg);">
+                    <img src="foto2.jpg">
+                    <span class="photo-tag">Photobooth ♡</span>
+                </div>
+                <p class="caption">"yuyur ini photobooth kita yang terlucu tergemas dan terkece sih kek aduh selucu ntu couple goals ini"</p>
+            </div>
+            <div class="back" onclick="prevPage(2)">
+                <div class="sticker" style="bottom: 70px; left: -10px;">🍭</div>
+                <div class="photo-frame" style="transform: rotate(-2deg);">
+                    <img src="foto3.jpg">
+                    <span class="photo-tag">Unboxing Time ♡</span>
+                </div>
+                <p class="caption">"for the first time kita unboxing kek gini"an dan merakit lego lucu bersama capibara yeayyy"</p>
+            </div>
+        </div>
+
+        <div class="page" id="p3" style="z-index: 2;">
+            <div class="front" onclick="nextPage(3)">
+                <div class="sticker" style="top: 20px; right: 20px;">🍓</div>
+                <div class="photo-frame" style="transform: rotate(2deg);">
+                    <img src="foto4.jpg">
+                    <span class="photo-tag">My Only One ♡</span>
+                </div>
+                <p class="caption">"and the last photo is my most beautiful girlfriend ♡"</p>
+            </div>
+            <div class="back" onclick="prevPage(3)" style="background: rgb(255, 187, 237); border-radius: 15px 0 0 15px; border-right: 3px solid var(--pink-main); background-image: radial-gradient(#ffebee 1px, transparent 1px); background-size: 15px 15px;">
+                <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 35px;">Private!</h2>
+                <div style="font-size: 60px; margin: 20px 0;">🔐</div>
+                <p style="font-size: 14px; color: #777; text-align: center; font-weight: bold;">ada surprise kalo kamu bisa buka ini...</p>
+            </div>
+        </div>
+
+        <div class="base-page">
+            <div id="lockArea" style="text-align: center; width: 100%;">
+                <div style="font-size: 55px; margin-bottom: 15px;">🎁</div>
+                <h3 style="color: var(--pink-main); letter-spacing: 1px; font-weight: bold;">KODE NUKLIR</h3>
+                <input type="password" id="passInput" class="pass-input" placeholder="apa hayo kodenya wkwk">
+                <br>
+                <button class="unlock-btn" onclick="checkPassword()">BUKA SURPRISE ♡</button>
+                <p id="errorMsg" style="color: red; font-size: 11px; margin-top: 15px; display: none; font-weight: bold;">wkwk kodenya salah sayang :P</p>
+            </div>
+
+            <div id="finalSurprise" style="display: none; text-align: center; animation: fadeIn 2s forwards;">
+                <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 38px; margin: 10px 0;">Happy Anniversary ♡</h2>
+                <p class="caption" style="font-size: 17px; font-weight: bold; color: #333; background: rgba(255,255,255,0.8); border: 2px dashed var(--pink-soft);">
+                    "makasi sayang uda bisa bertahan ampe sejauh ini. semoga kita bisa terus bikin momen yang jauh lebih seru dari sebelumnya, ketawa bareng, dan saling support kayak gini terus ya sayang. I love you so much, and happy anniversary! semoga kita bisa terus jadi tim yang solid dan bahagia bareng-bareng. love you always and forever ♡"
+                </p>
+                <button onclick="location.reload()" style="background: none; border: none; color: #bbb; cursor: pointer; font-size: 11px; margin-top: 35px;">Klik untuk ulang memori</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const book = document.getElementById('book');
+        const music = document.getElementById('bgMusic');
+
+        function nextPage(num) {
+            const page = document.getElementById('p' + num);
+            page.classList.add('flipped');
+            setTimeout(() => { page.style.zIndex = num; }, 500);
+            if (num === 1) {
+                book.style.transform = "translateX(50%)";
+                // Musik akan menyala saat buku pertama kali diklik (mengatasi block autoplay browser)
+                if(music.paused) toggleMusic();
+            }
+        }
+
+        function prevPage(num) {
+            const page = document.getElementById('p' + num);
+            page.classList.remove('flipped');
+            page.style.zIndex = (5 - num);
+            if (num === 1) book.style.transform = "translateX(0%)";
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('musicIcon');
+            if (music.paused) { 
+                music.play().catch(e => console.log("Autoplay dicegah, butuh klik")); 
+                icon.innerText = "⏸️"; 
+            }
+            else { 
+                music.pause(); 
+                icon.innerText = "🎵"; 
+            }
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passInput').value;
+            const correctPass = "1845"; 
+
+            if (input === correctPass) {
+                document.getElementById('lockArea').style.display = 'none';
+                document.getElementById('finalSurprise').style.display = 'block';
+                for(let i=0; i<60; i++) setTimeout(createBgHeart, i * 50);
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function createBgHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            const size = Math.random() * 20 + 15;
+            heart.style.fontSize = size + 'px';
+            const duration = Math.random() * 3 + 3;
+            heart.style.animationDuration = duration + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, duration * 1000);
+        }
+        setInterval(createBgHeart, 400);
+    </script>
+</body>
+</html>
