@@ -10,24 +10,16 @@
             --pink-main: #ff4d6d;
             --pink-soft: #ff85a1;
             --pink-light: #fff0f3;
-            --pastel-purple: #f3e5f5;
-            --pastel-blue: #e3f2fd;
-            --pastel-peach: #fff3e0;
-            --pastel-green: #f1f8e9;
-            /* Ukuran dinamis untuk HP */
-            --book-width: 85vw;
-            --book-height: 70vh;
-            --max-w: 340px;
-            --max-h: 520px;
+            --book-w: 88vw;
+            --book-h: 65vh; /* Tinggi pas untuk kebanyakan HP */
         }
 
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 
         body {
-            background-color: #fff0f3;
-            background-image: radial-gradient(#ffb3c1 0.8px, transparent 0.8px), 
-                              linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
-            background-size: 20px 20px, 100% 100%;
+            background: #fff0f3;
+            background-image: radial-gradient(#ffb3c1 0.8px, transparent 0.8px);
+            background-size: 20px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,231 +28,218 @@
             perspective: 1500px;
             font-family: 'Quicksand', sans-serif;
             overflow: hidden;
-            touch-action: manipulation;
         }
 
-        /* Musik Player */
         .music-control {
             position: fixed; top: 15px; right: 15px; z-index: 1000;
-            background: white; width: 45px; height: 45px;
+            background: white; width: 40px; height: 40px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; border: 2px solid var(--pink-main);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid var(--pink-main);
         }
 
-        /* Container Buku */
         .book {
-            width: var(--book-width);
-            height: var(--book-height);
-            max-width: var(--max-w);
-            max-height: var(--max-h);
+            width: var(--book-w);
+            height: var(--book-h);
+            max-width: 350px;
+            max-height: 550px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 20px 20px 50px rgba(0,0,0,0.2);
-            border-radius: 0 15px 15px 0;
+            transition: transform 0.5s;
         }
 
         .page {
             width: 100%; height: 100%;
-            position: absolute; top: 0; left: 0;
+            position: absolute;
             transform-origin: left;
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
+            cursor: pointer;
         }
 
         .front, .back {
             width: 100%; height: 100%;
-            position: absolute; top: 0; left: 0;
+            position: absolute;
             backface-visibility: hidden;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             padding: 15px;
-            border-radius: 0 15px 15px 0;
-            box-shadow: inset -3px 0 10px rgba(0,0,0,0.1);
+            border-radius: 15px; /* Border radius di semua sisi lebih rapi di HP */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
-        .back { transform: rotateY(180deg); border-radius: 15px 0 0 15px; }
+        .back { transform: rotateY(180deg); }
 
-        /* Background Patterns */
-        #p1 .back { background: var(--pastel-purple); background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.4) 10px, rgba(255,255,255,0.4) 11px); }
-        #p2 .front { background: var(--pastel-blue); background-image: radial-gradient(white 10%, transparent 10%); background-size: 15px 15px; }
-        #p2 .back { background: var(--pastel-peach); }
-        #p3 .front { background: var(--pastel-green); }
-
-        .cover-front { 
-            background: var(--pink-main) !important; 
-            color: white; text-align: center;
-            border: 5px solid white;
-        }
+        /* Halaman-halaman */
+        #p1 .front { background: var(--pink-main); color: white; border: 4px solid white; }
+        #p1 .back { background: #f3e5f5; }
+        #p2 .front { background: #e3f2fd; }
+        #p2 .back { background: #fff3e0; }
+        #p3 .front { background: #f1f8e9; }
+        #p3 .back { background: #ffebee; }
 
         .page.flipped { transform: rotateY(-180deg); }
 
+        /* Style Foto */
         .photo-frame {
-            width: 90%; height: 60%; background: #fff;
-            padding: 8px 8px 35px 8px; border: 1px solid #ddd;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15); position: relative;
+            width: 95%;
+            aspect-ratio: 3/4;
+            background: white;
+            padding: 10px 10px 35px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
         }
         .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-tag { position: absolute; bottom: 8px; right: 10px; font-family: 'Dancing Script', cursive; color: var(--pink-main); font-size: 14px; }
-
-        .caption { 
-            font-family: 'Indie Flower', cursive; font-size: 14px; color: #444; 
-            text-align: center; margin-top: 12px; padding: 8px;
-            background: rgba(255,255,255,0.6); border-radius: 10px;
-            width: 95%; line-height: 1.3;
+        .photo-tag {
+            position: absolute; bottom: 8px; right: 10px;
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink-main); font-size: 14px;
         }
 
+        .caption {
+            font-family: 'Indie Flower', cursive;
+            font-size: 14px; color: #444;
+            text-align: center; margin-top: 15px;
+            width: 90%; line-height: 1.3;
+        }
+
+        /* Halaman Paling Bawah (Tempat Kode) */
         .base-page {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
-            border-radius: 0 15px 15px 0; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 20px;
-            z-index: 1; background: #fff;
-            box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
+            width: 100%; height: 100%;
+            position: absolute;
+            background: white;
+            border-radius: 15px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px;
+            z-index: 0; /* Selalu di bawah */
         }
 
-        /* Input & Button Mobile Friendly */
-        .pass-input {
-            width: 90%; padding: 15px; border: 2px solid #ffcdd2;
-            border-radius: 12px; text-align: center; margin-bottom: 15px;
-            font-size: 16px; /* Mencegah auto-zoom iOS */
+        input {
+            width: 85%; padding: 12px; border: 2px solid #ffccd5;
+            border-radius: 10px; text-align: center; margin: 15px 0;
+            font-size: 16px; font-family: 'Quicksand';
         }
 
-        .unlock-btn { 
-            background: var(--pink-main); color: white; border: none; 
-            padding: 15px 40px; border-radius: 30px; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
-            width: 90%;
+        button {
+            background: var(--pink-main); color: white;
+            border: none; padding: 12px 30px; border-radius: 25px;
+            font-weight: bold; width: 85%;
         }
 
-        .sticker { position: absolute; font-size: 30px; z-index: 5; animation: float 3s ease-in-out infinite; }
+        .sticker { position: absolute; font-size: 30px; animation: float 3s infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .bg-heart { position: fixed; top: -10vh; z-index: 9999; pointer-events: none; animation: fall linear forwards; }
+        .bg-heart { position: fixed; top: -10vh; pointer-events: none; animation: fall linear forwards; z-index: 999; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="lagu.mp3.mp3" type="audio/mpeg">
-    </audio>
-    
-    <div class="music-control" onclick="toggleMusic()">
-        <span id="musicIcon">🎵</span>
-    </div>
+    <audio id="bgMusic" loop><source src="lagu.mp3.mp3" type="audio/mpeg"></audio>
+    <div class="music-control" onclick="toggleMusic()"><span id="musicIcon">🎵</span></div>
 
-    <div class="book" id="book">
+    <div class="book">
         
-        <div class="page" id="p1" style="z-index: 4;">
-            <div class="front cover-front" onclick="nextPage(1)">
-                <div style="border: 2px dashed rgba(255,255,255,0.6); padding: 20px; border-radius: 15px;">
-                    <h1 style="font-size: 45px; margin: 0; font-family: 'Dancing Script', cursive;">Us.</h1>
-                    <p style="letter-spacing: 3px; font-size: 10px; font-weight: bold; margin: 10px 0;">HAPPY ANNIVERSARY</p>
-                    <div style="font-size: 40px; animation: beat 1s infinite;">💖</div>
-                </div>
-                <small style="margin-top: 20px; opacity: 0.8;">Tap untuk membuka &raquo;</small>
+        <div class="base-page">
+            <div id="lockArea" style="text-align: center;">
+                <div style="font-size: 50px;">🎁</div>
+                <h3 style="color: var(--pink-main); margin: 10px 0;">KODE RAHASIA</h3>
+                <input type="tel" id="passInput" placeholder="Masukkan Kode...">
+                <button onclick="checkPassword()">BUKA SURPRISE ♡</button>
+                <p id="errorMsg" style="color: red; font-size: 12px; display: none; margin-top: 10px;">Kodenya salah sayang :(</p>
             </div>
-            <div class="back" onclick="prevPage(1)">
-                <div class="sticker" style="top: 10px; right: 10px;">🌟</div>
-                <div class="photo-frame" style="transform: rotate(-2deg);">
-                    <img src="foto1.jpg">
-                    <span class="photo-tag">First Moment ♡</span>
-                </div>
-                <p class="caption">"Foto pertama kita pas tripledate, inget bgt deg-degannya hahahaha"</p>
+            <div id="finalSurprise" style="display: none; text-align: center;">
+                <h2 style="font-family: 'Dancing Script'; color: var(--pink-main); font-size: 30px;">Happy Anniversary!</h2>
+                <p style="font-family: 'Indie Flower'; font-size: 16px; line-height: 1.4; background: #fff5f7; padding: 10px; border-radius: 10px;">
+                    "Makasih ya sayang udah bertahan sampai sekarang. Aku sayang banget sama kamu. Semoga kita terus bareng-bareng ya! ❤️"
+                </p>
+                <button onclick="location.reload()" style="background: none; color: #ccc; font-size: 10px;">Ulang dari awal</button>
             </div>
         </div>
 
-        <div class="page" id="p2" style="z-index: 3;">
-            <div class="front" onclick="nextPage(2)">
-                <div class="sticker" style="top: 10px; left: 10px;">🎀</div>
+        <div class="page" id="p3" style="z-index: 1;">
+            <div class="front" onclick="flipPage(3)">
+                <div class="sticker" style="top:10px; right:10px;">🍓</div>
+                <div class="photo-frame">
+                    <img src="foto4.jpg">
+                    <span class="photo-tag">My Only One ♡</span>
+                </div>
+                <p class="caption">"And the last photo is my most beautiful girlfriend ♡"</p>
+            </div>
+            <div class="back" onclick="unflipPage(3)">
+                <div style="font-size: 60px;">🔐</div>
+                <h2 style="font-family: 'Dancing Script'; color: var(--pink-main);">Private!</h2>
+                <p style="text-align:center; font-size: 13px; color: #666; padding: 0 15px;">Dibalik halaman ini ada kejutan buat kamu...</p>
+                <small style="color: #999;">(Tap untuk kembali)</small>
+            </div>
+        </div>
+
+        <div class="page" id="p2" style="z-index: 2;">
+            <div class="front" onclick="flipPage(2)">
+                <div class="sticker" style="top:10px; left:10px;">🎀</div>
                 <div class="photo-frame" style="transform: rotate(2deg);">
                     <img src="foto2.jpg">
                     <span class="photo-tag">Photobooth ♡</span>
                 </div>
-                <p class="caption">"Ini beneran photobooth tergumush kita sih, vibe-nya dapet bgt!"</p>
+                <p class="caption">"yuyur ini photobooth kita yang terlucu tergemas sih"</p>
             </div>
-            <div class="back" onclick="prevPage(2)">
-                <div class="sticker" style="bottom: 50px; left: 5px;">🍭</div>
+            <div class="back" onclick="unflipPage(2)">
                 <div class="photo-frame" style="transform: rotate(-1deg);">
                     <img src="foto3.jpg">
-                    <span class="photo-tag">Lego Time ♡</span>
+                    <span class="photo-tag">Unboxing ♡</span>
                 </div>
-                <p class="caption">"Momen ngerakit lego capibara, sabar bgt kamu ngadepin aku"</p>
+                <p class="caption">"Momen ngerakit lego bareng, seru banget!"</p>
             </div>
         </div>
 
-        <div class="page" id="p3" style="z-index: 2;">
-            <div class="front" onclick="nextPage(3)">
-                <div class="sticker" style="top: 10px; right: 10px;">🍓</div>
-                <div class="photo-frame" style="transform: rotate(1deg);">
-                    <img src="foto4.jpg">
-                    <span class="photo-tag">My Only One ♡</span>
+        <div class="page" id="p1" style="z-index: 3;">
+            <div class="front" onclick="flipPage(1)">
+                <div style="text-align: center;">
+                    <h1 style="font-family: 'Dancing Script'; font-size: 60px; margin: 0;">Us.</h1>
+                    <div style="letter-spacing: 4px; font-size: 12px; font-weight: bold;">ANNIVERSARY</div>
+                    <div style="font-size: 45px; margin: 20px 0;">💖</div>
+                    <small style="opacity: 0.8;">Tap untuk buka &raquo;</small>
                 </div>
-                <p class="caption">"And of course, my beautiful girlfriend. Cantik bgt pusing!"</p>
             </div>
-            <div class="back" onclick="prevPage(3)" style="background: var(--pink-light);">
-                <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 30px;">Private!</h2>
-                <div style="font-size: 50px; margin: 15px 0;">🔐</div>
-                <p style="font-size: 13px; color: #888; text-align: center; padding: 0 10px;">Ada surprise kecil kalau kamu bisa tebak kodenya...</p>
-            </div>
-        </div>
-
-        <div class="base-page">
-            <div id="lockArea" style="text-align: center; width: 100%;">
-                <div style="font-size: 50px; margin-bottom: 10px;">🎁</div>
-                <h3 style="color: var(--pink-main); margin-bottom: 20px;">MASUKKAN KODE</h3>
-                <input type="tel" id="passInput" class="pass-input" placeholder="Hint: Tanggal jadian?">
-                <button class="unlock-btn" onclick="checkPassword()">BUKA HADIAH ♡</button>
-                <p id="errorMsg" style="color: red; font-size: 12px; margin-top: 15px; display: none;">Salah kodenya sayang, coba lagi! :P</p>
-            </div>
-
-            <div id="finalSurprise" style="display: none; text-align: center; animation: fadeIn 1s forwards; overflow-y: auto; max-height: 100%;">
-                <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 28px;">Happy Anniversary!</h2>
-                <p style="font-size: 14px; line-height: 1.6; color: #444; background: #fff5f7; padding: 15px; border-radius: 15px; border: 1px dashed var(--pink-main);">
-                    "Makasih ya udah bareng aku terus. Semoga kita makin solid, makin sering ketawa bareng, dan selalu ada buat satu sama lain. I love you to the moon and back! ❤️"
-                </p>
-                <button onclick="location.reload()" style="background:none; border:none; color:#aaa; font-size:10px; margin-top:10px;">Ulangi Memori</button>
+            <div class="back" onclick="unflipPage(1)">
+                <div class="photo-frame" style="transform: rotate(-3deg);">
+                    <img src="foto1.jpg">
+                    <span class="photo-tag">First Moment ♡</span>
+                </div>
+                <p class="caption">"Foto pertama kita pas tripledate, inget bgt!"</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        const book = document.getElementById('book');
         const music = document.getElementById('bgMusic');
 
-        function nextPage(num) {
-            const page = document.getElementById('p' + num);
-            page.classList.add('flipped');
-            // Mengatur stack z-index agar halaman sebelumnya tidak menutupi yang baru
-            setTimeout(() => { page.style.zIndex = num; }, 300);
+        function flipPage(num) {
+            document.getElementById('p' + num).classList.add('flipped');
+            if (num === 1 && music.paused) toggleMusic();
             
-            if (num === 1) {
-                // Di HP, geser sedikit ke kanan agar buku terlihat terbuka di tengah
-                book.style.transform = "translateX(15%)";
-                if(music.paused) toggleMusic();
-            }
+            // Atur z-index setelah animasi selesai agar tidak menutupi tombol bawah
+            setTimeout(() => {
+                document.getElementById('p' + num).style.zIndex = 0;
+            }, 700);
         }
 
-        function prevPage(num) {
+        function unflipPage(num) {
             const page = document.getElementById('p' + num);
+            page.style.zIndex = (4 - num); // Kembalikan z-index
             page.classList.remove('flipped');
-            setTimeout(() => { page.style.zIndex = (5 - num); }, 300);
-            if (num === 1) book.style.transform = "translateX(0%)";
         }
 
         function toggleMusic() {
             const icon = document.getElementById('musicIcon');
-            if (music.paused) { 
-                music.play().catch(() => {}); 
-                icon.innerText = "⏸️"; 
-            } else { 
-                music.pause(); 
-                icon.innerText = "🎵"; 
+            if (music.paused) {
+                music.play().catch(e => console.log("Audio play blocked"));
+                icon.innerText = "⏸️";
+            } else {
+                music.pause();
+                icon.innerText = "🎵";
             }
         }
 
@@ -269,29 +248,23 @@
             if (input === "1845") {
                 document.getElementById('lockArea').style.display = 'none';
                 document.getElementById('finalSurprise').style.display = 'block';
-                // Hujan hati
-                for(let i=0; i<40; i++) {
-                    setTimeout(createBgHeart, i * 100);
-                }
+                for(let i=0; i<50; i++) setTimeout(createHeart, i * 100);
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
             }
         }
 
-        function createBgHeart() {
+        function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('bg-heart');
-            heart.innerHTML = ['❤️','💖','💗','🌸'][Math.floor(Math.random()*4)];
+            heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
             const duration = Math.random() * 3 + 2;
             heart.style.animationDuration = duration + 's';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), duration * 1000);
         }
-
-        // Hati melayang di background secara konstan
-        setInterval(createBgHeart, 1000);
     </script>
 </body>
 </html>
