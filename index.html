@@ -13,7 +13,6 @@
             --pastel-blue: #e3f2fd;
             --pastel-peach: #fff3e0;
             --pastel-green: #f1f8e9;
-            /* Ukuran dinamis untuk HP */
             --book-width: 85vw;
             --book-height: 70vh;
             --max-w: 320px;
@@ -30,7 +29,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            perspective: 1500px;
+            perspective: 2000px;
             font-family: 'Quicksand', sans-serif;
             overflow: hidden;
             touch-action: none; 
@@ -42,14 +41,23 @@
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2); cursor: pointer;
         }
 
-        .book {
+        /* Container utama untuk geser fokus */
+        .book-viewport {
             width: var(--book-width);
             height: var(--book-height);
             max-width: var(--max-w);
             max-height: var(--max-h);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
             z-index: 500;
         }
 
@@ -75,34 +83,16 @@
 
         .back { transform: rotateY(180deg); border-radius: 15px 0 0 15px; }
 
-        #p1 .back {
-            background-color: var(--pastel-purple);
-            background-image: linear-gradient(rgba(255,255,255,.6) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.6) 2px, transparent 2px);
-            background-size: 20px 20px;
-        }
-        #p2 .front {
-            background-color: var(--pastel-blue);
-            background-image: radial-gradient(rgba(255,255,255,.8) 2px, transparent 2px);
-            background-size: 15px 15px;
-        }
-        #p2 .back {
-            background-color: var(--pastel-peach);
-            background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,.6) 20px);
-            background-size: 100% 20px;
-            border-radius: 15px 0 0 15px;
-            border-right: 3px solid #ffcc80;
-        }
-        #p3 .front {
-            background-color: var(--pastel-green);
-            background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
-            background-size: 15px 15px;
-        }
+        #p1 .back { background: var(--pastel-purple); background-image: linear-gradient(rgba(255,255,255,.6) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.6) 2px, transparent 2px); background-size: 20px 20px; }
+        #p2 .front { background: var(--pastel-blue); background-image: radial-gradient(rgba(255,255,255,.8) 2px, transparent 2px); background-size: 15px 15px; }
+        #p2 .back { background: var(--pastel-peach); background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,.6) 20px); background-size: 100% 20px; border-right: 3px solid #ffcc80; }
+        #p3 .front { background: var(--pastel-green); background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px); background-size: 15px 15px; }
 
         .cover-front { background: var(--pink-main) !important; color: white; text-align: center; }
         .page.flipped { transform: rotateY(-180deg); }
 
         .photo-frame {
-            width: 100%; height: 280px; background: #fff;
+            width: 100%; height: 260px; background: #fff;
             padding: 10px 10px 45px 10px; border: 1px solid #eee;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1); position: relative;
             box-sizing: border-box;
@@ -114,7 +104,7 @@
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-15px) rotate(10deg); } }
 
         .caption { 
-            font-family: 'Indie Flower', cursive; font-size: 16px; color: #444; 
+            font-family: 'Indie Flower', cursive; font-size: 15px; color: #444; 
             text-align: center; margin-top: 15px; padding: 5px 12px;
             background: rgba(255,255,255,0.7); border-radius: 12px;
         }
@@ -140,148 +130,141 @@
     <audio id="bgMusic" loop><source src="lagu.mp3.mp3" type="audio/mpeg"></audio>
     <div class="music-control" onclick="toggleMusic()"><span id="musicIcon">🎵</span></div>
 
-    <div class="book" id="book">
-        
-        <div class="page" id="p1" style="z-index: 4;">
-            <div class="front cover-front" onclick="nextPage(1)">
-                <div style="border: 2px dashed rgba(255,255,255,0.5); padding: 25px; border-radius: 20px;">
-                    <h1 style="font-size: 55px; margin: 0; font-family: 'Dancing Script', cursive;">Us.</h1>
-                    <p style="letter-spacing: 4px; font-size: 11px; font-weight: bold;">HAPPY ANNIVERSARY</p>
-                    <div class="heart-beat" style="font-size: 45px; margin: 20px 0;">💖</div>
+    <div class="book-viewport" id="viewport">
+        <div class="book" id="book">
+            
+            <div class="page" id="p1" style="z-index: 4;">
+                <div class="front cover-front" onclick="nextPage(1)">
+                    <div style="border: 2px dashed rgba(255,255,255,0.5); padding: 25px; border-radius: 20px;">
+                        <h1 style="font-size: 55px; margin: 0; font-family: 'Dancing Script', cursive;">Us.</h1>
+                        <p style="letter-spacing: 4px; font-size: 11px; font-weight: bold;">HAPPY ANNIVERSARY</p>
+                        <div class="heart-beat" style="font-size: 45px; margin: 20px 0;">💖</div>
+                    </div>
+                    <small style="margin-top: 30px; display: block; opacity: 0.9; font-weight: bold;">Tap buat buka &raquo;</small>
                 </div>
-                <small style="margin-top: 30px; display: block; opacity: 0.9; font-weight: bold;">Tap buat buka &raquo;</small>
+                <div class="back" onclick="prevPage(1)">
+                    <div class="sticker" style="top: 10px; right: 10px;">🌟</div>
+                    <div class="sticker" style="bottom: 20px; left: 20px;">✨</div>
+                    <div class="photo-frame" style="transform: rotate(-3deg);">
+                        <img src="foto1.jpg">
+                        <span class="photo-tag">First Moment ♡</span>
+                    </div>
+                    <p class="caption">"foto pertama kita. yang dimana kita langsung tripledate hahahaha "</p>
+                </div>
             </div>
-            <div class="back" onclick="prevPage(1)">
-                <div class="sticker" style="top: 10px; right: 10px;">🌟</div>
-                <div class="sticker" style="bottom: 20px; left: 20px;">✨</div>
-                <div class="photo-frame" style="transform: rotate(-3deg);">
-                    <img src="foto1.jpg">
-                    <span class="photo-tag">First Moment ♡</span>
+
+            <div class="page" id="p2" style="z-index: 3;">
+                <div class="front" onclick="nextPage(2)">
+                    <div class="sticker" style="top: 15px; left: 15px;">🎀</div>
+                    <div class="sticker" style="bottom: 100px; right: 10px;">🧸</div>
+                    <div class="photo-frame" style="transform: rotate(3deg);">
+                        <img src="foto2.jpg">
+                        <span class="photo-tag">Photobooth ♡</span>
+                    </div>
+                    <p class="caption">"yuyur ini photobooth kita yang terlucu tergemas dan terkece sih kek aduh selucu ntu couple goals ini"</p>
                 </div>
-                <p class="caption">"foto pertama kita. yang dimana kita langsung tripledate hahahaha "</p>
+                <div class="back" onclick="prevPage(2)">
+                    <div class="sticker" style="bottom: 70px; left: -10px;">🍭</div>
+                    <div class="sticker" style="top: 10px; right: 10px;">🌈</div>
+                    <div class="photo-frame" style="transform: rotate(-2deg);">
+                        <img src="foto3.jpg">
+                        <span class="photo-tag">Unboxing Time ♡</span>
+                    </div>
+                    <p class="caption">"for the first time kita unboxing kek gini"an dan merakit lego lucu bersama capibara yeayyy"</p>
+                </div>
+            </div>
+
+            <div class="page" id="p3" style="z-index: 2;">
+                <div class="front" onclick="nextPage(3)">
+                    <div class="sticker" style="top: 20px; right: 20px;">🍓</div>
+                    <div class="sticker" style="bottom: 80px; left: 10px;">🦋</div>
+                    <div class="photo-frame" style="transform: rotate(2deg);">
+                        <img src="foto4.jpg">
+                        <span class="photo-tag">My Only One ♡</span>
+                    </div>
+                    <p class="caption">"and the last photo is my most beautiful girlfriend ♡"</p>
+                </div>
+                <div class="back" onclick="prevPage(3)" style="background: rgb(255, 187, 237); border-radius: 15px 0 0 15px; border-right: 3px solid var(--pink-main); background-image: radial-gradient(#ffebee 1px, transparent 1px); background-size: 15px 15px;">
+                    <div class="sticker" style="top: 20px; left: 20px;">🎈</div>
+                    <div class="sticker" style="bottom: 20px; right: 20px;">🌸</div>
+                    <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 35px;">Private!</h2>
+                    <div style="font-size: 60px; margin: 20px 0;">🔐</div>
+                    <p style="font-size: 14px; color: #777; text-align: center; font-weight: bold;">ada surprise kalo kamu bisa buka ini...</p>
+                </div>
+            </div>
+
+            <div class="base-page">
+                <div class="sticker" style="top: 10px; right: 10px;">🍬</div>
+                <div class="sticker" style="top: 50px; left: 10px;">🍯</div>
+                <div id="lockArea" style="text-align: center; width: 100%;">
+                    <div style="font-size: 55px; margin-bottom: 15px;">🎁</div>
+                    <h3 style="color: var(--pink-main); letter-spacing: 1px; font-weight: bold;">KODE NUKLIR</h3>
+                    <input type="password" id="passInput" class="pass-input" placeholder="apa hayo kodenya wkwk">
+                    <br>
+                    <button class="unlock-btn" onclick="checkPassword()">BUKA SURPRISE ♡</button>
+                    <p id="errorMsg" style="color: red; font-size: 11px; margin-top: 15px; display: none; font-weight: bold;">wkwk kodenya salah sayang :P</p>
+                </div>
+
+                <div id="finalSurprise" style="display: none; text-align: center;">
+                    <div class="sticker" style="bottom: 20px; left: 20px;">🥳</div>
+                    <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 38px; margin: 10px 0;">Happy Anniversary ♡</h2>
+                    <p class="caption" style="font-size: 16px; font-weight: bold; color: #333; background: rgba(255,255,255,0.8); border: 2px dashed var(--pink-soft);">
+                        "makasi sayang uda bisa bertahan ampe sejauh ini. semoga kita bisa terus bikin momen yang jauh lebih seru dari sebelumnya, ketawa bareng, dan saling support kayak gini terus ya sayang. I love you so much, and happy anniversary! semoga kita bisa terus jadi tim yang solid dan bahagia bareng-bareng. love you always and forever ♡"
+                    </p>
+                    <button onclick="location.reload()" style="background: none; border: none; color: #bbb; cursor: pointer; font-size: 11px; margin-top: 35px;">Klik untuk ulang memori</button>
+                </div>
             </div>
         </div>
-
-        <div class="page" id="p2" style="z-index: 3;">
-            <div class="front" onclick="nextPage(2)">
-                <div class="sticker" style="top: 15px; left: 15px;">🎀</div>
-                <div class="sticker" style="bottom: 100px; right: 10px;">🧸</div>
-                <div class="photo-frame" style="transform: rotate(3deg);">
-                    <img src="foto2.jpg">
-                    <span class="photo-tag">Photobooth ♡</span>
-                </div>
-                <p class="caption">"yuyur ini photobooth kita yang terlucu tergemas dan terkece sih kek aduh selucu ntu couple goals ini"</p>
-            </div>
-            <div class="back" onclick="prevPage(2)">
-                <div class="sticker" style="bottom: 70px; left: -10px;">🍭</div>
-                <div class="sticker" style="top: 10px; right: 10px;">🌈</div>
-                <div class="photo-frame" style="transform: rotate(-2deg);">
-                    <img src="foto3.jpg">
-                    <span class="photo-tag">Unboxing Time ♡</span>
-                </div>
-                <p class="caption">"for the first time kita unboxing kek gini"an dan merakit lego lucu bersama capibara yeayyy"</p>
-            </div>
-        </div>
-
-        <div class="page" id="p3" style="z-index: 2;">
-            <div class="front" onclick="nextPage(3)">
-                <div class="sticker" style="top: 20px; right: 20px;">🍓</div>
-                <div class="sticker" style="bottom: 80px; left: 10px;">🦋</div>
-                <div class="photo-frame" style="transform: rotate(2deg);">
-                    <img src="foto4.jpg">
-                    <span class="photo-tag">My Only One ♡</span>
-                </div>
-                <p class="caption">"and the last photo is my most beautiful girlfriend ♡"</p>
-            </div>
-            <div class="back" onclick="prevPage(3)" style="background: rgb(255, 187, 237); border-radius: 15px 0 0 15px; border-right: 3px solid var(--pink-main); background-image: radial-gradient(#ffebee 1px, transparent 1px); background-size: 15px 15px;">
-                <div class="sticker" style="top: 20px; left: 20px;">🎈</div>
-                <div class="sticker" style="bottom: 20px; right: 20px;">🌸</div>
-                <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 35px;">Private!</h2>
-                <div style="font-size: 60px; margin: 20px 0;">🔐</div>
-                <p style="font-size: 14px; color: #777; text-align: center; font-weight: bold;">ada surprise kalo kamu bisa buka ini...</p>
-            </div>
-        </div>
-
-        <div class="base-page">
-            <div class="sticker" style="top: 10px; right: 10px;">🍬</div>
-            <div class="sticker" style="top: 50px; left: 10px;">🍯</div>
-            <div id="lockArea" style="text-align: center; width: 100%;">
-                <div style="font-size: 55px; margin-bottom: 15px;">🎁</div>
-                <h3 style="color: var(--pink-main); letter-spacing: 1px; font-weight: bold;">KODE NUKLIR</h3>
-                <input type="password" id="passInput" class="pass-input" placeholder="apa hayo kodenya wkwk">
-                <br>
-                <button class="unlock-btn" onclick="checkPassword()">BUKA SURPRISE ♡</button>
-                <p id="errorMsg" style="color: red; font-size: 11px; margin-top: 15px; display: none; font-weight: bold;">wkwk kodenya salah sayang :P</p>
-            </div>
-
-            <div id="finalSurprise" style="display: none; text-align: center;">
-                <div class="sticker" style="bottom: 20px; left: 20px;">🥳</div>
-                <h2 style="color: var(--pink-main); font-family: 'Dancing Script', cursive; font-size: 38px; margin: 10px 0;">Happy Anniversary ♡</h2>
-                <p class="caption" style="font-size: 17px; font-weight: bold; color: #333; background: rgba(255,255,255,0.8); border: 2px dashed var(--pink-soft);">
-                    "makasi sayang uda bisa bertahan ampe sejauh ini. semoga kita bisa terus bikin momen yang jauh lebih seru dari sebelumnya, ketawa bareng, dan saling support kayak gini terus ya sayang. I love you so much, and happy anniversary! semoga kita bisa terus jadi tim yang solid dan bahagia bareng-bareng. love you always and forever ♡"
-                </p>
-                <button onclick="location.reload()" style="background: none; border: none; color: #bbb; cursor: pointer; font-size: 11px; margin-top: 35px;">Klik untuk ulang memori</button>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        const book = document.getElementById('book');
+        const viewport = document.getElementById('viewport');
         const music = document.getElementById('bgMusic');
         let currentOpenPage = 0;
 
         let touchstartX = 0;
         let touchendX = 0;
 
-        document.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleGesture();
+        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
+        document.addEventListener('touchend', e => { 
+            touchendX = e.changedTouches[0].screenX; 
+            handleGesture(); 
         });
 
         function handleGesture() {
-            if (touchstartX - touchendX > 50) { 
-                if (currentOpenPage < 3) nextPage(currentOpenPage + 1);
-            }
-            if (touchendX - touchstartX > 50) { 
-                if (currentOpenPage > 0) prevPage(currentOpenPage);
-            }
+            if (touchstartX - touchendX > 50) { if (currentOpenPage < 3) nextPage(currentOpenPage + 1); }
+            if (touchendX - touchstartX > 50) { if (currentOpenPage > 0) prevPage(currentOpenPage); }
         }
 
         function nextPage(num) {
             const page = document.getElementById('p' + num);
             page.classList.add('flipped');
             currentOpenPage = num;
+            
+            // LOGIKA FOKUS: Geser viewport ke KIRI supaya halaman kanan jadi di TENGAH
+            // 50% lebar buku bergeser ke kiri layar
+            viewport.style.transform = `translateX(50%)`;
+
             setTimeout(() => { page.style.zIndex = num; }, 500);
-            if (num === 1) {
-                let shift = window.innerWidth < 600 ? "40%" : "50%";
-                book.style.transform = `translateX(${shift})`;
-                if(music.paused) toggleMusic();
-            }
+            if (num === 1 && music.paused) toggleMusic();
         }
 
         function prevPage(num) {
             const page = document.getElementById('p' + num);
             page.classList.remove('flipped');
             currentOpenPage = num - 1;
+            
+            // Kalau semua tutup, balik ke center asal
+            if (currentOpenPage === 0) {
+                viewport.style.transform = "translateX(0%)";
+            }
             page.style.zIndex = (5 - num);
-            if (num === 1) book.style.transform = "translateX(0%)";
         }
 
         function toggleMusic() {
             const icon = document.getElementById('musicIcon');
-            if (music.paused) { 
-                music.play().catch(e => {}); 
-                icon.innerText = "⏸️"; 
-            }
-            else { 
-                music.pause(); 
-                icon.innerText = "🎵"; 
-            }
+            if (music.paused) { music.play().catch(e => {}); icon.innerText = "⏸️"; }
+            else { music.pause(); icon.innerText = "🎵"; }
         }
 
         function checkPassword() {
@@ -289,6 +272,8 @@
             if (input === "1845") {
                 document.getElementById('lockArea').style.display = 'none';
                 document.getElementById('finalSurprise').style.display = 'block';
+                // Balikin surprise ke tengah tanpa shift
+                viewport.style.transform = "translateX(0%)";
                 for(let i=0; i<60; i++) setTimeout(createBgHeart, i * 50);
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
